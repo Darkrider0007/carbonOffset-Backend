@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your OTP Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            text-align: left;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .otp {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Logo at the top-left corner -->
+        <div class="header">
+            <img src="https://carbon-offset-tau.vercel.app/assets/logo-CvXSqe3k.png" alt="Logo" class="logo" />
+        </div>
+
+        <!-- Main content of the email -->
+        <h1>Hello!</h1>
+        <p>Here is your OTP for verification:</p>
+
+        <!-- Insert OTP dynamically here -->
+        <p class="otp">{{OTP}}</p>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This is a no-reply email. Please do not reply to this message.</p>
+        </div>
+    </div>
+</body>
+
+</html>

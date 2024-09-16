@@ -10,6 +10,7 @@ import {
   logOut,
   refreshToken,
   updateUser,
+  verifyEmail,
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middleware/verifyUser.js";
 
@@ -25,5 +26,6 @@ router.post("/logout", logOut);
 router.put("/update-user", updateUser);
 router.delete("/delete-user", deleteUser);
 router.put("/forgot-password", forgotPassword);
+router.post("/verify-email", verifyEmail);
 
 export default router;

@@ -75,6 +75,18 @@ export const createUser = async (req, res) => {
       });
     }
 
+    // Generate 6 digit OTP and send email
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    await sendOtp(email, otp);
+
+    user.verificationCode = otp;
+
+    user.markModified("verificationCode");
+
+    await user.save();
+
     // Send the success response
     res.status(201).send({
       status: "success",
@@ -387,4 +399,39 @@ export const forgotPassword = async (req, res) => {
     const send = sendOtp();
     res.send(send);
   } catch (error) {}
+};
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const { id, pin } = req.body;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send({
+        status: 404,
+        message: "User not found",
+      });
+    }
+
+    if (user.verificationCode !== pin) {
+      return res.status(400).send({
+        status: 400,
+        message: "Invalid OTP",
+      });
+    }
+
+    user.isVerified = true;
+    user.verificationCode = null;
+
+    user.markModified("isVerified");
+
+    await user.save();
+
+    res.status(200).send({
+      status: "success",
+      message: "Email verified successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
