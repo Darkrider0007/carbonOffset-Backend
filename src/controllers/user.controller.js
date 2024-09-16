@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
-import sendOtp from "../helpers/sendMail.js";
+import sendOtp, { welcomeMail } from "../helpers/sendMail.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -303,9 +303,11 @@ export const getAllUsers = async (req, res) => {
 
 export const logOut = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = req.user;
 
-    if (!user) {
+    const userProfile = await User.findById(user._id);
+
+    if (!userProfile) {
       return res.status(404).send({
         status: 404,
         message: "User not found",
@@ -315,14 +317,10 @@ export const logOut = async (req, res) => {
     user.refreshToken = "";
     await user.save({ validateBeforeSave: false });
 
-    res
-      .status(200)
-      .send({
-        status: "success",
-        message: "User logged out successfully",
-      })
-      .clearCookie("accessToken")
-      .clearCookie("refreshToken");
+    res.status(200).send({
+      status: "success",
+      message: "User logged out successfully",
+    });
   } catch (error) {
     res.status(500).send({
       status: 500,
@@ -427,11 +425,97 @@ export const verifyEmail = async (req, res) => {
 
     await user.save();
 
+    await welcomeMail(user.email);
+
     res.status(200).send({
       status: "success",
       message: "Email verified successfully",
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const sendMailForgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send({
+        status: 404,
+        message: "User not found",
+      });
+    }
+
+    // Genetate a six digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    user.verificationCode = otp;
+
+    user.markModified("verificationCode");
+
+    await sendOtp(email, otp);
+
+    await user.save();
+
+    res.status(200).send({
+      status: "success",
+      message: "OTP sent successfully",
+      data: {
+        userId: user._id,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { id, otp, newPassword } = req.body;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({
+        status: 404,
+        message: "User not found",
+      });
+    }
+
+    if (user.verificationCode !== otp) {
+      return res.status(400).send({
+        status: 400,
+        message: "Invalid OTP",
+      });
+    }
+
+    user.verificationCode = null;
+
+    const isPasswordSame = await bcrypt.compare(newPassword, user.password);
+    if (isPasswordSame) {
+      return res.status(400).send({
+        status: 400,
+        message: "New password cannot be same as old password",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+
+    user.markModified("password");
+
+    await user.save();
+
+    return res.status(209).send({
+      status: "success",
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
 };

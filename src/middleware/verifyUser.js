@@ -6,7 +6,6 @@ const verifyJWT = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(" ")[1];
-
       const userData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
       const user = await User.findById(userData._id).select(

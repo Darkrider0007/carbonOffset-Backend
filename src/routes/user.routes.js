@@ -9,6 +9,8 @@ import {
   loginUser,
   logOut,
   refreshToken,
+  sendMailForgetPassword,
+  updatePassword,
   updateUser,
   verifyEmail,
 } from "../controllers/user.controller.js";
@@ -22,10 +24,12 @@ router.get("/refresh-token", refreshToken);
 router.get("/get-user", verifyJWT, getUser);
 router.get("/:id", getUserById);
 router.get("/get-all-users", getAllUsers);
-router.post("/logout", logOut);
+router.post("/logout", verifyJWT, logOut);
 router.put("/update-user", updateUser);
 router.delete("/delete-user", deleteUser);
 router.put("/forgot-password", forgotPassword);
 router.post("/verify-email", verifyEmail);
+router.post("/sendmail-forgetpassword", sendMailForgetPassword);
+router.put("/update-password", updatePassword);
 
 export default router;
