@@ -86,7 +86,7 @@ export const updateTokenVolume = async (req, res) => {
 
 export const getToken = async (req, res) => {
   try {
-    const token = await Token.findById(req.params.tokenId);
+    const token = await Token.find();
 
     if (!token) {
       return res.status(404).send({
