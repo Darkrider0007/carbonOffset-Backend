@@ -7,6 +7,7 @@ import user from "./routes/user.routes.js";
 import dashBoard from "./routes/dashboard.routes.js";
 import token from "./routes/token.routes.js";
 import admin from "./routes/admin.routes.js";
+import farmOnboard from "./routes/farmOnboarding.routes.js";
 import sendOtp, { welcomeMail } from "./helpers/sendMail.js";
 // import cors from "cors";
 
@@ -27,5 +28,6 @@ app.use("/api/token", token);
 app.use("/api/user", user);
 app.use("/api/dashboard", dashBoard);
 app.use("/api/admin", admin);
+app.use("/api/farmOnboard", farmOnboard);
 
 export default app;

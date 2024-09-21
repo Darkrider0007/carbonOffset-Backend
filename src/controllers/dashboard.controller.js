@@ -54,6 +54,7 @@ export const getDashboard = async (req, res) => {
           userCount: 1,
           status: 1,
           details: 1,
+          image: 1,
         },
       },
     ]);
@@ -94,16 +95,6 @@ export const getDashboard = async (req, res) => {
 
     const projectDataByMonth =
       calculatePercentageIncreaseProjects(projectByMonth);
-
-    console.log({
-      totalUsers: totalUsers[0].userCount,
-      totalProjects: totalProjects[0].projectCount,
-      percentageUserIncrease: percentageUserIncrease.percentageIncrease,
-      userCountPerMonth: percentageUserIncrease.countByMonth,
-      projectCountPerMonth: projectDataByMonth.percentageIncrease,
-      projectDataByMonth: projectDataByMonth.countByMonth,
-      time: Date.now(),
-    });
 
     return res.status(200).json({
       totalUsers: totalUsers[0].userCount,

@@ -1,7 +1,5 @@
 import projectModel from "../models/project.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { getDataUri } from "../utils/feature.js";
-import { v2 as cloudinary } from "cloudinary";
 
 // Create a new project
 export const createProject = async (req, res) => {

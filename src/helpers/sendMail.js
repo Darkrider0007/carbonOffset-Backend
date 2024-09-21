@@ -111,3 +111,29 @@ export async function welcomeMail(email) {
     console.error("Error in sendOtp function:", error.message);
   }
 }
+
+export async function farmonboardingFormSubmitMail(email) {
+  try {
+    const token = await getToken();
+
+    // Read HTML content from the file
+    const htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "FarmOnboardingFormFill.html"
+    );
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+
+    await farmonboardingFormSubmitMail();
+
+    // Send email with the updated HTML content via Microsoft Graph API
+    await sendEmail(
+      token,
+      "Thank you for submitting your Farm Onboarding Form",
+      htmlContent,
+      [email]
+    );
+  } catch (error) {
+    throw error;
+  }
+}
