@@ -1,5 +1,5 @@
 import { farmonboardingFormSubmitMail } from "../helpers/sendMail.js";
-import FarmOnboarding from "../models/FarmOnboarding.model.js";
+import FarmOnboarding from "../models/farmOnboarding.model.js";
 
 // Create a new farm onboarding entry with detailed missing field validation
 export const createFarmOnboarding = async (req, res) => {
