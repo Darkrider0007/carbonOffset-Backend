@@ -1,6 +1,25 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
+const tokenPurchase = mongoose.Schema(
+  {
+    description: {
+      type: String,
+    },
+    amaount: {
+      type: Number,
+    },
+    type: {
+      type: String,
+      enum: ["CREDIT", "DEBIT"],
+      default: "CREDIT",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -41,6 +60,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    tokenHistory: [tokenPurchase],
   },
   {
     timestamps: true,

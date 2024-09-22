@@ -96,6 +96,11 @@ export const createCheckoutSessionForTokenPurchase = async (req, res) => {
 
     userProfile.tokenCount += totalCredit;
 
+    userProfile.tokenHistory.push({
+      amaount: totalCost,
+      description: "Token purchase",
+    });
+
     const saveTheUser = await userProfile.save();
 
     if (!saveTheUser) {
