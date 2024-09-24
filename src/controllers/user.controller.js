@@ -278,9 +278,10 @@ export const getUserById = async (req, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
-  console.log("getAllUsers");
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find().select(
+      "-password -refreshToken -isVerified -verificationCode -__v"
+    );
 
     if (!allUsers) {
       return res.status(404).send({
