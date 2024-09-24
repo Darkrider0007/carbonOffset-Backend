@@ -278,6 +278,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
+  console.log("getAllUsers");
   try {
     const allUsers = await User.find();
 
