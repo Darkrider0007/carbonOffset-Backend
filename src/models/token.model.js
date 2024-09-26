@@ -37,6 +37,10 @@ const tokenSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    tokenPerTon: {
+      type: Number,
+      default: 0,
+    },
     tokenPriceHistory: {
       type: [tokenPriceHistorySchema],
     },

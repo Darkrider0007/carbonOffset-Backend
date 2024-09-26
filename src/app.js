@@ -8,7 +8,10 @@ import dashBoard from "./routes/dashboard.routes.js";
 import token from "./routes/token.routes.js";
 import admin from "./routes/admin.routes.js";
 import farmOnboard from "./routes/farmOnboarding.routes.js";
-import sendOtp, { welcomeMail } from "./helpers/sendMail.js";
+import sendOtp, {
+  newFarmOnboardingNotfication,
+  welcomeMail,
+} from "./helpers/sendMail.js";
 // import cors from "cors";
 
 dotenv.config();

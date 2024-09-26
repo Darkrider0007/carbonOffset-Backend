@@ -155,3 +155,27 @@ export const shrinkTokenVolume = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
+export const updateTokenPerTon = async (req, res) => {
+  try {
+    const token = await Token.findById(req.params.tokenId);
+    if (!token) {
+      return res.status(404).send({
+        status: 400,
+        message: "Invalid Token ID",
+      });
+    }
+
+    token.tokenPerTon = req.body.tokenPerTon;
+    token.markModified("tokenPerTon");
+    await token.save();
+
+    res.status(200).send({
+      status: "success",
+      data: token,
+      message: "Token updated successfully",
+    });
+  } catch (error) {
+    res.status(500).send(err);
+  }
+};

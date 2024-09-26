@@ -123,9 +123,87 @@ export async function farmonboardingFormSubmitMail(email) {
       "FarmOnboardingFormFill.html"
     );
     let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+    // Send email with the updated HTML content via Microsoft Graph API
+    await sendEmail(
+      token,
+      "Thank you for submitting your Farm Onboarding Form",
+      htmlContent,
+      [email]
+    );
+  } catch (error) {
+    throw error;
+  }
+}
 
-    await farmonboardingFormSubmitMail();
+export async function newFarmOnboardingNotfication(
+  email,
+  ownerName,
+  organizationName,
+  farmLocation,
+  farmArea,
+  reviewLink
+) {
+  try {
+    const token = await getToken();
 
+    // Read HTML content from the file
+    const htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "NewFarmOnboardingNotfication.html"
+    );
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+
+    // Replace placeholders in the HTML content with dynamic data
+    htmlContent = htmlContent
+      .replace("{{ownerName}}", ownerName)
+      .replace("{{organizationName}}", organizationName)
+      .replace("{{farmLocation}}", farmLocation)
+      .replace("{{farmArea}}", farmArea)
+      .replace("{{reviewLink}}", reviewLink);
+
+    // Send email with the updated HTML content via Microsoft Graph API or your preferred service
+    await sendEmail(token, "New Farm Onboarded", htmlContent, [email]);
+  } catch (error) {
+    console.error("Failed to send new farm onboarding notification:", error);
+    throw error;
+  }
+}
+
+export async function farmonboardingAccpectMail(email) {
+  try {
+    const token = await getToken();
+
+    // Read HTML content from the file
+    const htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "FarmonboardingAccpectMail.html"
+    );
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+    // Send email with the updated HTML content via Microsoft Graph API
+    await sendEmail(
+      token,
+      "Thank you for submitting your Farm Onboarding Form",
+      htmlContent,
+      [email]
+    );
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function farmonboardingRejectMail(email) {
+  try {
+    const token = await getToken();
+
+    // Read HTML content from the file
+    const htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "FarmonboardingRejectMail.html"
+    );
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
     // Send email with the updated HTML content via Microsoft Graph API
     await sendEmail(
       token,
