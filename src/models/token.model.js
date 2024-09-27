@@ -48,6 +48,10 @@ const tokenSchema = new mongoose.Schema(
       type: [tokenVolumeHistorySchema],
       default: [],
     },
+    tokenLimit: {
+      type: Number,
+      default: 1000,
+    },
   },
   {
     timestamps: true,

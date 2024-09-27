@@ -179,3 +179,27 @@ export const updateTokenPerTon = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
+export const updateTokenLimit = async (req, res) => {
+  try {
+    const token = await Token.findById(req.params.tokenId);
+    if (!token) {
+      return res.status(404).send({
+        status: 400,
+        message: "Invalid Token ID",
+      });
+    }
+
+    token.tokenLimit = req.body.tokenAmountLimit;
+    token.markModified("tokenLimit");
+    await token.save();
+
+    res.status(200).send({
+      status: "success",
+      data: token,
+      message: "Token updated successfully",
+    });
+  } catch (error) {
+    res.status(500).send(err);
+  }
+};
