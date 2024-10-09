@@ -45,11 +45,10 @@ export const adminLogin = async (req, res) => {
   }
 };
 
-export const verifyAdmin = async () => {
+export const verifyAdmin = async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(token, process.env.ADMIN_JWT_SECRET);
-
     if (
       decoded.email !== process.env.ADMIN_EMAIL1 &&
       decoded.email !== process.env.ADMIN_EMAIL2 &&
@@ -67,7 +66,7 @@ export const verifyAdmin = async () => {
       decoded: decoded,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: 500,
       message: error.message,
     });
