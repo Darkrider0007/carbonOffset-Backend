@@ -24,6 +24,9 @@ const tokenVolumeHistorySchema = new mongoose.Schema(
     purchasedBy: {
       type: String,
     },
+    netChange: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

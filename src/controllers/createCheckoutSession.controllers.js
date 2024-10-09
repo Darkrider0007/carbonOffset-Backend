@@ -76,6 +76,7 @@ export const createCheckoutSessionForTokenPurchase = async (req, res) => {
       tokenPrice: totalCost,
       tokenVolume: totalCredit,
       purchasedBy: req.user._id,
+      netChange: totalCredit,
     });
 
     buyToken.markModified("tokenVolumeHistory");
