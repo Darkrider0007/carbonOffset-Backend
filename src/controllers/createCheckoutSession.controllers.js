@@ -122,3 +122,102 @@ export const createCheckoutSessionForTokenPurchase = async (req, res) => {
     res.status(500).json({ error: "Failed to create checkout session" });
   }
 };
+
+export const getAllCheckOutSeason = async (req, res) => {
+  try {
+    const limit = req.query.limit || 10;
+    const sessions = await stripe.checkout.sessions.list({
+      limit,
+    });
+
+    res.json(sessions);
+  } catch (error) {
+    console.error("Error listing checkout sessions:", error);
+    res.status(500).json({ error: "Failed to list checkout sessions" });
+  }
+};
+
+export const listAllCheckoutSessions = async (req, res) => {
+  try {
+    const limit = req.query.limit || 10;
+    const sessions = await stripe.checkout.sessions.list({
+      limit,
+    });
+
+    if (!sessions.data || sessions.data.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: "No checkout session found",
+      });
+    }
+
+    const sessionDetails = sessions.data
+      .sort((a, b) => b.created - a.created)
+      .map((session) => {
+        const paymentTime = new Date(session.created * 1000).toLocaleString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            weekday: "long",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+          }
+        );
+
+        return {
+          name: session.customer_details?.name || "Not provided",
+          email: session.customer_details?.email || "Not provided",
+          id: session.id,
+          paymentId: session.payment_intent || "Not provided",
+          totalAmount: session.amount_total || 0,
+          currency: session.currency || "Not specified",
+          paymentTime,
+          status: session.payment_status || "Unknown",
+        };
+      });
+
+    return res.status(200).json({
+      status: 200,
+      message: "Checkout sessions retrieved successfully",
+      totalData: sessions.data.length,
+      data: sessionDetails,
+    });
+  } catch (error) {
+    console.error("Error listing checkout sessions:", error);
+    res.status(500).json({ error: "Failed to list checkout sessions" });
+  }
+};
+
+export const totalAmountReceived = async (req, res) => {
+  try {
+    const limit = req.query.limit || 10;
+    const sessions = await stripe.checkout.sessions.list({
+      limit,
+    });
+
+    const totalBalance = await stripe.balance.retrieve();
+
+    if (!sessions.data || sessions.data.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: "No checkout session found",
+      });
+    }
+
+    const totalAmount = sessions.data.reduce(
+      (acc, session) => acc + session.amount_total,
+      0
+    );
+
+    res.status(200).json({
+      status: 200,
+      message: "Total amount received retrieved successfully",
+      totalAmount,
+      totalBalance,
+    });
+  } catch (error) {}
+};

@@ -2,6 +2,9 @@ import { Router } from "express";
 import {
   createCheckoutSession,
   createCheckoutSessionForTokenPurchase,
+  getAllCheckOutSeason,
+  listAllCheckoutSessions,
+  totalAmountReceived,
 } from "../controllers/createCheckoutSession.controllers.js";
 import { verifyJWT } from "../middleware/verifyUser.js";
 
@@ -13,5 +16,7 @@ router.post(
   verifyJWT,
   createCheckoutSessionForTokenPurchase
 );
+router.get("/totalAmountReceived", totalAmountReceived);
+router.get("/listTransactions", listAllCheckoutSessions);
 
 export default router;
