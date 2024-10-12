@@ -152,6 +152,7 @@ export const listAllCheckoutSessions = async (req, res) => {
     }
 
     const sessionDetails = sessions.data
+      .filter((session) => session.payment_status === "paid")
       .sort((a, b) => b.created - a.created)
       .map((session) => {
         const paymentTime = new Date(session.created * 1000).toLocaleString(
@@ -176,7 +177,6 @@ export const listAllCheckoutSessions = async (req, res) => {
           totalAmount: session.amount_total || 0,
           currency: session.currency || "Not specified",
           paymentTime,
-          status: session.payment_status || "Unknown",
         };
       });
 
