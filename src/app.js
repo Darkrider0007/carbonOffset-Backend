@@ -8,11 +8,7 @@ import dashBoard from "./routes/dashboard.routes.js";
 import token from "./routes/token.routes.js";
 import admin from "./routes/admin.routes.js";
 import farmOnboard from "./routes/farmOnboarding.routes.js";
-import sendOtp, {
-  newFarmOnboardingNotfication,
-  welcomeMail,
-} from "./helpers/sendMail.js";
-// import cors from "cors";
+import newslatterModel from "./routes/newslatter.routes.js";
 
 dotenv.config();
 
@@ -32,5 +28,6 @@ app.use("/api/user", user);
 app.use("/api/dashboard", dashBoard);
 app.use("/api/admin", admin);
 app.use("/api/farmOnboard", farmOnboard);
+app.use("/api/newsletter", newslatterModel);
 
 export default app;

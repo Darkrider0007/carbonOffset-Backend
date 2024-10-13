@@ -215,3 +215,45 @@ export async function farmonboardingRejectMail(email) {
     throw error;
   }
 }
+
+export async function newsletterSubscribeMail(email) {
+  try {
+    const token = await getToken();
+
+    // Use path.resolve for compatibility across different environments
+    const htmlFilePath = path.resolve(
+      __dirname,
+      "template",
+      "NewslatterSubscribeMail.html"
+    );
+
+    // Check if the file exists before trying to read it
+    if (!fs.existsSync(htmlFilePath)) {
+      throw new Error("Email template file not found.");
+    }
+
+    // Read HTML content from the file
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+
+    // Replace placeholders in the HTML content dynamically
+    htmlContent = htmlContent
+      .replace("{{subscriberName}}", email)
+      .replace("{{websiteLink}}", process.env.CLIENT_URL);
+
+    // Send email with the updated HTML content via Microsoft Graph API
+    await sendEmail(
+      token,
+      "Thank you for subscribing to our newsletter",
+      htmlContent,
+      [email]
+    );
+
+    console.log(`Subscription email successfully sent to ${email}`);
+  } catch (error) {
+    console.error(
+      "Failed to send newsletter subscription email:",
+      error.message
+    );
+    throw error;
+  }
+}
