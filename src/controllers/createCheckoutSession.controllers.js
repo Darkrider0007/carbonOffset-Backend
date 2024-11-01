@@ -139,7 +139,7 @@ export const getAllCheckOutSeason = async (req, res) => {
 
 export const listAllCheckoutSessions = async (req, res) => {
   try {
-    const limit = req.query.limit || 10;
+    const limit = req.query.limit || 1000;
     const sessions = await stripe.checkout.sessions.list({
       limit,
     });
@@ -194,7 +194,7 @@ export const listAllCheckoutSessions = async (req, res) => {
 
 export const totalAmountReceived = async (req, res) => {
   try {
-    const limit = req.query.limit || 10;
+    const limit = req.query.limit || 1000;
     const sessions = await stripe.checkout.sessions.list({
       limit,
     });

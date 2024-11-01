@@ -257,3 +257,48 @@ export async function newsletterSubscribeMail(email) {
     throw error;
   }
 }
+
+export async function proposalSubmitMail(email, proposerName, websiteLink) {
+  try {
+    const token = await getToken();
+
+    // Read HTML content from the file
+    const htmlFilePath = path.join(__dirname, "template", "ProposalSubmit.html");
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+
+    // Replace placeholders with actual data
+    htmlContent = htmlContent
+      .replace("{{ proposerName }}", proposerName)
+      .replace("{{ websiteLink }}", websiteLink);
+
+    // Send email with the updated HTML content via Microsoft Graph API
+    await sendEmail(token, "Thank you for submitting your proposal", htmlContent, [email]);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function proposalSubmittedMailToAdmin(proposalData) {
+  try {
+    const token = await getToken();
+
+    // Read HTML content from the file
+    const htmlFilePath = path.join(__dirname, "template", "ProposalSubmitedMailTOAdmin.html");
+    let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+
+    // Replace placeholders in HTML content with actual data
+    htmlContent = htmlContent
+      .replace("{{ proposerName }}", proposalData.proposerName)
+      .replace("{{ proposerEmail }}", proposalData.proposerEmail)
+      .replace("{{ proposalDetails }}", proposalData.proposalDetails)
+      .replace("{{ isNeedFund }}", proposalData.isNeedFund ? "Yes" : "No");
+
+    // Send email to each admin
+    const adminEmails = [process.env.ADMIN_EMAIL1, process.env.ADMIN_EMAIL2, process.env.ADMIN_EMAIL3];
+    for (const adminEmail of adminEmails) {
+      await sendEmail(token, "New Proposal Submitted", htmlContent, [adminEmail]);
+    }
+  } catch (error) {
+    throw error;
+  }
+}
