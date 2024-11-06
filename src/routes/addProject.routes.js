@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createProject,
   deleteProject,
+  editProject,
   getAllProjects,
   getProjectById,
 } from "../controllers/project.controllers.js";
@@ -14,6 +15,8 @@ router.get("/:id", getProjectById);
 router.get("/", getAllProjects);
 
 router.post("/", upload.single("image"), createProject);
+
+router.put("/:id", upload.single("image"), editProject);
 
 router.delete("/:id", deleteProject);
 
