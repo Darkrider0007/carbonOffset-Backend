@@ -61,14 +61,7 @@ export const getAllProjects = async (req, res) => {
 
 export const editProject = async (req, res) => {
   try {
-    const projectId = req.params.id;
-
-   
-
-    console.log(req.body);
-    console.log(req.params);
-
-    
+    const projectId = req.params.id;    
 
     const { name, location, userCount, details } = req.body;
 
@@ -105,7 +98,6 @@ export const editProject = async (req, res) => {
 
     res.status(200).json(project);
   } catch (error) {
-    console.error(error);
     res.status(404).json({ message: error.message });    
   }
 };
