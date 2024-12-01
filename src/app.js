@@ -10,6 +10,7 @@ import admin from "./routes/admin.routes.js";
 import farmOnboard from "./routes/farmOnboarding.routes.js";
 import newslatterModel from "./routes/newslatter.routes.js";
 import proposal from "./routes/proposal.routes.js";
+import IndividualEmissions from "./routes/IndividualEmissions.routes.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use("/api/dashboard", dashBoard);
 app.use("/api/admin", admin);
 app.use("/api/farmOnboard", farmOnboard);
 app.use("/api/newsletter", newslatterModel);
-app.use("/api/proposal",proposal)
+app.use("/api/proposal", proposal)
+app.use("/api/calculate-individual", IndividualEmissions)
 
 export default app;
