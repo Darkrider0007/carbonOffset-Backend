@@ -263,7 +263,11 @@ export async function proposalSubmitMail(email, proposerName, websiteLink) {
     const token = await getToken();
 
     // Read HTML content from the file
-    const htmlFilePath = path.join(__dirname, "template", "ProposalSubmit.html");
+    const htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "ProposalSubmit.html"
+    );
     let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
 
     // Replace placeholders with actual data
@@ -272,7 +276,12 @@ export async function proposalSubmitMail(email, proposerName, websiteLink) {
       .replace("{{ websiteLink }}", websiteLink);
 
     // Send email with the updated HTML content via Microsoft Graph API
-    await sendEmail(token, "Thank you for submitting your proposal", htmlContent, [email]);
+    await sendEmail(
+      token,
+      "Thank you for submitting your proposal",
+      htmlContent,
+      [email]
+    );
   } catch (error) {
     throw error;
   }
@@ -283,7 +292,11 @@ export async function proposalSubmittedMailToAdmin(proposalData) {
     const token = await getToken();
 
     // Read HTML content from the file
-    const htmlFilePath = path.join(__dirname, "template", "ProposalSubmitedMailTOAdmin.html");
+    const htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "ProposalSubmitedMailTOAdmin.html"
+    );
     let htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
 
     // Replace placeholders in HTML content with actual data
@@ -291,12 +304,82 @@ export async function proposalSubmittedMailToAdmin(proposalData) {
       .replace("{{ proposerName }}", proposalData.proposerName)
       .replace("{{ proposerEmail }}", proposalData.proposerEmail)
       .replace("{{ proposalDetails }}", proposalData.proposalDetails)
-      .replace("{{ isNeedFund }}", proposalData.isNeedFund ? "Yes" : "No");
+      .replace("{{ proposalTitle }}", proposalData.proposalTitle);
 
     // Send email to each admin
-    const adminEmails = [process.env.ADMIN_EMAIL1, process.env.ADMIN_EMAIL2, process.env.ADMIN_EMAIL3];
+    const adminEmails = [
+      process.env.ADMIN_EMAIL1,
+      process.env.ADMIN_EMAIL2,
+      process.env.ADMIN_EMAIL3,
+    ];
     for (const adminEmail of adminEmails) {
-      await sendEmail(token, "New Proposal Submitted", htmlContent, [adminEmail]);
+      await sendEmail(token, "New Proposal Submitted", htmlContent, [
+        adminEmail,
+      ]);
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function createMembershipMail(email, fullName) {
+  try {
+    const token = await getToken();
+    const htmlFilePath = path.join(__dirname, "template", "Membership.html");
+    let htmlContent = await fs.promises.readFile(htmlFilePath, "utf-8");
+
+    htmlContent = htmlContent.replace("{{fullName}}", fullName);
+    htmlContent = htmlContent.replace(
+      "{{websiteLink}}",
+      "https://1world1nation.org/"
+    );
+
+    await sendEmail(
+      token,
+      "Membership Application Created Successfully",
+      htmlContent,
+      [email]
+    );
+  } catch (error) {
+    console.error("Failed to create membership mail:", error);
+    throw error;
+  }
+}
+
+export async function membershipSubmittedToAdmin(email, fullName) {
+  try {
+    var token = await getToken();
+
+    // Read HTML content from the file
+    var htmlFilePath = path.join(
+      __dirname,
+      "template",
+      "MembershipSubmittedToAdmin.html"
+    );
+    var htmlContent = fs.readFileSync(htmlFilePath, "utf-8");
+
+    // Replace placeholders in the HTML content with dynamic data
+
+    htmlContent = htmlContent.replace("{{fullName}}", fullName);
+    htmlContent = htmlContent.replace(
+      "{{websiteLink}}",
+      "https://1world1nation.org/"
+    );
+
+    // Send email with the updated HTML content via Microsoft Graph API
+
+    const adminEmails = [
+      process.env.ADMIN_EMAIL1,
+      process.env.ADMIN_EMAIL2,
+      process.env.ADMIN_EMAIL3,
+    ];
+    for (const adminEmail of adminEmails) {
+      await sendEmail(
+        token,
+        "New Membership Application Submitted",
+        htmlContent,
+        [adminEmail]
+      );
     }
   } catch (error) {
     throw error;

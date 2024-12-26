@@ -5,7 +5,7 @@ import {
   editProject,
   getAllProjects,
   getProjectById,
-} from "../controllers/project.controllers.js";
+} from "../controllers/project.controller.js";
 import { upload } from "../middleware/multer.js";
 
 const router = Router();

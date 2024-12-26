@@ -11,6 +11,9 @@ import farmOnboard from "./routes/farmOnboarding.routes.js";
 import newslatterModel from "./routes/newslatter.routes.js";
 import proposal from "./routes/proposal.routes.js";
 import IndividualEmissions from "./routes/IndividualEmissions.routes.js";
+import Membership from "./routes/membership.routes.js";
+import VolunteerRegistration from "./routes/volunteerRegistration.routes.js";
+import CollaborativeParticipation from "./routes/collaborativeParticipation.routes.js";
 
 dotenv.config();
 
@@ -31,7 +34,10 @@ app.use("/api/dashboard", dashBoard);
 app.use("/api/admin", admin);
 app.use("/api/farmOnboard", farmOnboard);
 app.use("/api/newsletter", newslatterModel);
-app.use("/api/proposal", proposal)
-app.use("/api/calculate-individual", IndividualEmissions)
+app.use("/api/proposal", proposal);
+app.use("/api/calculate-individual", IndividualEmissions);
+app.use("/api/membership", Membership);
+app.use("/api/volunteerRegistration", VolunteerRegistration);
+app.use("/api/collaborativeParticipation", CollaborativeParticipation);
 
 export default app;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +12,7 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 600px;
             margin: 20px auto;
@@ -19,34 +21,41 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+
         .logo {
             width: 120px;
             height: auto;
             display: block;
             margin: 0 auto 20px auto;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         h1 {
             text-align: center;
             color: #2c3e50;
             font-size: 24px;
             margin-bottom: 10px;
         }
+
         .content {
             color: #444;
             line-height: 1.8;
             font-size: 16px;
         }
+
         .content p {
             margin: 0 0 15px;
         }
+
         .highlight {
             color: #006400;
             font-weight: bold;
         }
+
         .footer {
             font-size: 12px;
             color: #999;
@@ -54,9 +63,11 @@
             margin-top: 30px;
             padding: 10px;
         }
+
         .footer p {
             margin: 5px 0;
         }
+
         .divider {
             height: 1px;
             background-color: #e1e1e1;
@@ -64,15 +75,17 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header with logo -->
         <div class="header">
-            <img src="https://carbon-offset-tau.vercel.app/assets/logo-CvXSqe3k.png" alt="1World1Nation Logo" class="logo" />
+            <img src="https://carbon-offset-tau.vercel.app/assets/logo-CvXSqe3k.png" alt="1World1Nation Logo"
+                class="logo" />
         </div>
 
         <!-- Notification Message -->
-        <h1>New Proposal Submitted</h1>
+        <h1>New Membership Application Submitted</h1>
 
         <!-- Content -->
         <div class="content">
@@ -80,11 +93,7 @@
 
             <p>A new proposal has been submitted to the platform. Here are the details:</p>
 
-            <p><strong>Proposer Name:</strong> <span class="highlight">{{ proposerName }}</span></p>
-            <p><strong>Email:</strong> {{ proposerEmail }}</p>
-            <p><strong>Proposal Title:</strong> {{ proposalTitle }}</p>
-            <p><strong>Proposal Details:</strong> {{ proposalDetails }}</p>
-            
+            <p><strong>Candidate Name:</strong> <span class="highlight">{{ fullName }}</span></p>
 
             <p>Please review the proposal at your earliest convenience.</p>
 
@@ -97,8 +106,10 @@
         <!-- Footer Section -->
         <div class="footer">
             <p>This is an automated message. Please do not reply to this email.</p>
-            <p>If you have any questions or need assistance, feel free to contact us at <strong>support@1world1nation.org</strong>.</p>
+            <p>If you have any questions or need assistance, feel free to contact us at
+                <strong>support@1world1nation.org</strong>.</p>
         </div>
     </div>
 </body>
+
 </html>

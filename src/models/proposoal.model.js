@@ -7,22 +7,33 @@ const proposalSchema = new mongoose.Schema(
       required: true,
     },
     lastName: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
-    proposalDetails:{
-        type: String,
-        required: true,
+    proposalTitle: {
+      type: String,
+      required: true,
     },
-    isNeedFund:{
-       type: Boolean, 
-       default: false,
+    proposalDetails: {
+      type: String,
+      required: true,
     },
-            
+    focusArea: {
+      type: String,
+      required: true,
+    },
+    supportingDocuments: {
+      type: String,
+      required: false,
+    },
+    agreePrivacy: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
