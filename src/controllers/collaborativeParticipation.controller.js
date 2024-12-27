@@ -60,6 +60,29 @@ export const createCollaborativeParticipation = async (req, res) => {
   }
 };
 
+export const getCollaborativeParticipation = async (req, res) => {
+  try {
+    const collaborativeParticipation = await CollaborativeParticipation.find();
+
+    if (!collaborativeParticipation) {
+      return res
+        .status(404)
+        .json({ message: "No Collaborative Participation found" });
+    }
+
+    if (collaborativeParticipation.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No Collaborative Participation found" });
+    }
+
+    res.status(200).json({ collaborativeParticipation });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 // {
 //     "fullName": "Carroll Preston Traders",
 //     "email": "pymy@mailinator.com",
