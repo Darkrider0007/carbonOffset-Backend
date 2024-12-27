@@ -57,6 +57,29 @@ export const createRegistration = async (req, res) => {
   }
 };
 
+export const getRegistrations = async (req, res) => {
+  try {
+    const registrations = await VolunteerRegistration.find();
+
+    if (!registrations) {
+      return res.status(404).json({ message: "No registrations found" });
+    }
+
+    if (registrations.length === 0) {
+      return res.status(204).json({ message: "No registrations found" });
+    }
+
+    registrations.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // {
 //     "fullName": "Stacy Barton",
 //     "email": "kyjom@mailinator.com",

@@ -1,8 +1,13 @@
 import { Router } from "express";
-import { createRegistration } from "../controllers/volunteerRegistration.controller.js";
+import {
+  createRegistration,
+  getRegistrations,
+} from "../controllers/volunteerRegistration.controller.js";
 
 const router = Router();
 
 router.post("/", createRegistration);
+
+router.get("/", getRegistrations);
 
 export default router;
