@@ -94,4 +94,25 @@ const createMembership = async (req, res) => {
   }
 };
 
-export { createMembership };
+const getMemberships = async (req, res) => {
+  try {
+    const memberships = await Membership.find();
+
+    if (!memberships) {
+      return res.status(400).json({ message: "No membership found" });
+    }
+
+    if (memberships.length === 0) {
+      return res.status(400).json({ message: "No membership found" });
+    }
+
+    memberships.sort((a, b) => b.createdAt - a.createdAt);
+
+    res.status(200).json({ memberships });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export { createMembership, getMemberships };
