@@ -76,6 +76,10 @@ export const getCollaborativeParticipation = async (req, res) => {
         .json({ message: "No Collaborative Participation found" });
     }
 
+    collaborativeParticipation.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
     res.status(200).json({ collaborativeParticipation });
   } catch (error) {
     console.log(error);
