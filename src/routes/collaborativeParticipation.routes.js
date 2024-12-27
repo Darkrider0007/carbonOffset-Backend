@@ -9,6 +9,6 @@ const router = Router();
 
 router.post("/", createCollaborativeParticipation);
 
-router.get("/", verifyAdmin, getCollaborativeParticipation);
+router.get("/", getCollaborativeParticipation);
 
 export default router;
