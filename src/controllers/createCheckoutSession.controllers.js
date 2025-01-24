@@ -42,36 +42,77 @@ export const createCheckoutSession = async (req, res) => {
 
 export const createCheckoutSessionForTokenPurchase = async (req, res) => {
   try {
-    const { totalCost, totalCredit } = req.body;
+    const { totalCost, totalCredit, paymentType, duration, clientType } =
+      req.body;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "Carbon Offset Payment",
-              description: `Offset for ${totalCredit} credits`,
+    let session;
+    if (paymentType === "subscription") {
+      // Create a subscription session
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: "Carbon Offset Subscription",
+                description: `Recurring offset for ${totalCredit.toFixed(
+                  4
+                )} credits`,
+              },
+              unit_amount: Math.round(totalCost * 100),
+              recurring: {
+                interval: "month",
+                interval_count: duration,
+              },
             },
-            unit_amount: Math.round(totalCost * 100),
+            quantity: 1,
           },
-          quantity: 1,
+        ],
+        mode: "subscription",
+        success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CLIENT_URL}/`,
+        metadata: {
+          userId: req.user._id.toString(),
+          totalCredit: totalCredit,
+          userName: req.user.name || "Unknown",
+          clientType: clientType,
         },
-      ],
-      mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/success`,
-      cancel_url: `${process.env.CLIENT_URL}/`,
-    });
+      });
+    } else {
+      // Create a one-time payment session
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: "Carbon Offset Payment",
+                description: `Offset for ${totalCredit.toFixed(4)} credits`,
+              },
+              unit_amount: Math.round(totalCost * 100),
+            },
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CLIENT_URL}/`,
+        metadata: {
+          userId: req.user._id.toString(),
+          totalCredit: totalCredit,
+          userName: req.user.name || "Unknown",
+          clientType: clientType,
+        },
+      });
+    }
 
     const token = await Token.find();
-
     const tokenId = token[0]._id;
 
     const buyToken = await Token.findById(tokenId);
-
     buyToken.tokenVolume += totalCredit;
-
     buyToken.tokenVolumeHistory.push({
       tokenPrice: totalCost,
       tokenVolume: totalCredit,
@@ -91,13 +132,10 @@ export const createCheckoutSessionForTokenPurchase = async (req, res) => {
     }
 
     const user = req.user;
-
     const userProfile = await User.findById(user._id);
 
     userProfile.token = tokenId;
-
     userProfile.tokenCount += totalCredit;
-
     userProfile.tokenHistory.push({
       amaount: totalCost,
       description: "Token purchase",
