@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import Token from "../models/token.model.js";
 import User from "../models/user.model.js";
+import BusinessDetails from "../models/businessDetails.model.js";
 
 dotenv.config();
 
@@ -42,8 +43,14 @@ export const createCheckoutSession = async (req, res) => {
 
 export const createCheckoutSessionForTokenPurchase = async (req, res) => {
   try {
-    const { totalCost, totalCredit, paymentType, duration, clientType } =
-      req.body;
+    const {
+      totalCost,
+      totalCredit,
+      paymentType,
+      duration,
+      clientType,
+      businessId,
+    } = req.body;
 
     let session;
     if (paymentType === "subscription") {
@@ -141,15 +148,22 @@ export const createCheckoutSessionForTokenPurchase = async (req, res) => {
       description: "Token purchase",
     });
 
-    const saveTheUser = await userProfile.save();
+    await userProfile.save();
+    // const saveTheUser = await userProfile.save();
 
-    if (!saveTheUser) {
-      return res.status(500).json({
-        status: 500,
-        message: "Failed to update user token count",
-      });
+    // if (!saveTheUser) {
+    //   return res.status(500).json({
+    //     status: 500,
+    //     message: "Failed to update user token count",
+    //   });
+    // }
+
+    if (businessId) {
+      const business = await BusinessDetails.findById(businessId);
+      business.totalCradit += totalCredit;
+
+      await business.save();
     }
-
     res.status(200).json({
       id: session.id,
       status: 200,
