@@ -14,6 +14,7 @@ import IndividualEmissions from "./routes/IndividualEmissions.routes.js";
 import Membership from "./routes/membership.routes.js";
 import VolunteerRegistration from "./routes/volunteerRegistration.routes.js";
 import CollaborativeParticipation from "./routes/collaborativeParticipation.routes.js";
+import BusinessDetails from "./routes/businessDetails.routes.js";
 
 dotenv.config();
 
@@ -39,5 +40,6 @@ app.use("/api/calculate-individual", IndividualEmissions);
 app.use("/api/membership", Membership);
 app.use("/api/volunteerRegistration", VolunteerRegistration);
 app.use("/api/collaborativeParticipation", CollaborativeParticipation);
+app.use("/api/businessDetails", BusinessDetails);
 
 export default app;

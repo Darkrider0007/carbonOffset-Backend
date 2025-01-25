@@ -57,17 +57,3 @@ const CollaborativeParticipation = mongoose.model(
 );
 
 export default CollaborativeParticipation;
-
-// {
-//     "fullName": "Carroll Preston Traders",
-//     "email": "pymy@mailinator.com",
-//     "phone": "+1 (777) 228-4334",
-//     "city": "Natus quidem aperiam",
-//     "stateOrRegion": "Enim voluptate volup",
-//     "country": "Zimbabwe",
-//     "membershipType": "Collaboration",
-//     "collaborationType": "Individual",
-//     "collaborationFocus": "Investor",
-//     "additionalInfo": "Excepturi veritatis ",
-//     "agreePrivacy": true
-// }
