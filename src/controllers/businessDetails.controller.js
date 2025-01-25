@@ -109,6 +109,28 @@ export const updateCrdits = async (req, res) => {
   }
 };
 
+export const getBusinessDetails = async (req, res) => {
+  try {
+    const businessDetails = await BusinessDetails.find();
+
+    if (!businessDetails) {
+      return res.status(404).json({ error: "Business details not found" });
+    }
+
+    if (businessDetails.length === 0) {
+      return res.status(404).json({ error: "Business details not found" });
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: "Business details retrieved successfully",
+      data: businessDetails,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get business details" });
+  }
+};
+
 // {
 //     "name": "Zenaida Montgomery",
 //     "title": "Ullamco eveniet pro",
